@@ -48,9 +48,9 @@ function Actions.Summary(player)
 end
 
 local SHOWCASE = {
-	{ 53, "Golden", 4 }, { 57, nil, 3 }, { 50, "Galaxy Brain", 2 }, { 48, "Rizzed", 3 }, { 41, "Sigma", 2 }, { 49, nil, 1 },
-	{ 44, "Brain Freeze", 2 }, { 39, "Golden", 5 }, { 46, nil, 2 }, { 34, "Max Aura", 1 }, { 36, "Rotten", 3 }, { 42, "Ohio", 1 },
-	{ 54, nil, 2 }, { 47, "Golden", 1 }, { 40, nil, 2 }, { 33, "Rizzed", 1 }, { 51, nil, 1 }, { 30, "Brain Freeze", 2 },
+	{ 41, "Sigma", 2 }, { 44, "Brain Freeze", 2 }, { 39, "Golden", 5 }, { 46, nil, 2 }, { 34, "Max Aura", 1 }, { 36, "Rotten", 3 },
+	{ 42, "Ohio", 1 }, { 40, nil, 2 }, { 33, "Rizzed", 1 }, { 30, "Brain Freeze", 2 }, { 53, "Golden", 4 }, { 57, nil, 3 },
+	{ 50, "Galaxy Brain", 2 }, { 48, "Rizzed", 3 }, { 49, nil, 1 }, { 54, nil, 2 }, { 47, "Golden", 1 }, { 51, nil, 1 },
 }
 
 function Actions.SetupShowcase(player)

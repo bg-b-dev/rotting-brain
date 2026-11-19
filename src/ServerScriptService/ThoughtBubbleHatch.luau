@@ -15,8 +15,8 @@ local ThoughtBubbleHatch = { Visuals = {} }
 
 ThoughtBubbleHatch.Kinds = {
 	Basic = { Price = 500, Seconds = 30, MinRarity = 1, Luck = 0.3, Wash = 0, Color = Color3.new(1, 1, 1), Neon = false },
-	Gold = { Price = 5e4, Seconds = 120, MinRarity = 3, Luck = 1, Wash = 1, Color = Color3.fromRGB(255, 205, 60), Neon = true },
-	Galaxy = { Price = 5e6, Seconds = 300, MinRarity = 5, Luck = 2, Wash = 3, Color = Color3.fromRGB(150, 90, 255), Neon = true },
+	Gold = { Price = 5e4, Seconds = 120, MinRarity = 3, Luck = 1, Wash = 1, Color = Color3.fromRGB(255, 205, 60), Neon = false },
+	Galaxy = { Price = 5e6, Seconds = 300, MinRarity = 5, Luck = 2, Wash = 3, Color = Color3.fromRGB(150, 90, 255), Neon = false },
 }
 
 local rng = Random.new()
@@ -38,7 +38,7 @@ function ThoughtBubbleHatch.BuildBubble(kind, at: CFrame)
 	end
 	WorldBuilder.Part(m, { Name = "Trail", Shape = Enum.PartType.Ball, Size = Vector3.one * 0.9, CFrame = at * CFrame.new(0.4, 1.3, 0), Color = k.Color, Material = mat, CanCollide = false })
 	WorldBuilder.Part(m, { Name = "Trail", Shape = Enum.PartType.Ball, Size = Vector3.one * 0.5, CFrame = at * CFrame.new(0.7, 0.6, 0), Color = k.Color, Material = mat, CanCollide = false })
-	local label = WorldBuilder.Billboard(core, "?", { Name = "Timer", Size = UDim2.fromScale(5, 2.4), Offset = Vector3.new(0, 3, 0), Color = Color3.fromRGB(255, 215, 70), MaxDistance = 80 })
+	local label = WorldBuilder.Billboard(core, "?", { Name = "Timer", Size = UDim2.fromScale(3.6, 1.4), Offset = Vector3.new(0, 2.4, 0), Color = Color3.fromRGB(255, 215, 70), MaxDistance = 80 })
 	label.Font = Enum.Font.LuckiestGuy
 	local prompt = WorldBuilder.Prompt(core, "Pop", kind .. " Thought Bubble", 0.3)
 	prompt.Name = "PopPrompt"

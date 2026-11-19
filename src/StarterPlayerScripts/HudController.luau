@@ -49,7 +49,7 @@ local function buildTop(root)
 	local feed = Instance.new("Frame")
 	feed.Name = "Feed"
 	feed.BackgroundTransparency = 1
-	feed.Size = UDim2.fromOffset(440, 96)
+	feed.Size = UDim2.fromOffset(700, 96)
 	feed.Position = UDim2.fromOffset(12, 132)
 	feed.Parent = root
 	for i = 1, 3 do

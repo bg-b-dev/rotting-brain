@@ -14,6 +14,7 @@ local Layout = WorldBuilder.Layout
 local LobeService = { Lobes = {}, StealHandler = nil }
 
 LobeService.TierCost = { 5e3, 1e5, 5e6, 5e8 }
+local PLAYER_LOBE_ORDER = { 2, 6, 4, 8, 1, 5, 3, 7 }
 local TIER_UNLOCK = { "", "2 Thought Bubble pads", "Second floor (safe from the Touch Grass Wave)", "Brain Fog slot 2", "Neon sign, gold trim, goo waterfall" }
 
 local function setVisible(root: Instance, on: boolean)
@@ -172,14 +173,16 @@ end
 
 local function assign(player: Player)
 	local lobe
-	for _, l in LobeService.Lobes do
+	for _, i in PLAYER_LOBE_ORDER do
+		local l = LobeService.Lobes[i]
 		if not l.Owner and not l.NpcName then
 			lobe = l
 			break
 		end
 	end
 	if not lobe then
-		for _, l in LobeService.Lobes do
+		for _, i in PLAYER_LOBE_ORDER do
+			local l = LobeService.Lobes[i]
 			if not l.Owner then
 				lobe = l
 				break

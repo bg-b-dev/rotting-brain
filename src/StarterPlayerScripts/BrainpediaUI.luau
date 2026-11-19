@@ -14,7 +14,7 @@ local BrainpediaUI = {}
 local tiles = {}
 
 function BrainpediaUI.Start()
-	local win, content = UiKit.Window("Brainpedia", "📖 BRAINPEDIA", Vector2.new(940, 620), C.Pink)
+	local win, content = UiKit.Window("Brainpedia", "📖 BRAINPEDIA", Vector2.new(940, 560), C.Pink)
 	local header = UiKit.Label(content, { Size = UDim2.new(1, 0, 0, 26), Text = "", TextColor3 = C.Yellow, TextXAlignment = Enum.TextXAlignment.Left })
 	local gridHolder = Instance.new("Frame")
 	gridHolder.BackgroundTransparency = 1

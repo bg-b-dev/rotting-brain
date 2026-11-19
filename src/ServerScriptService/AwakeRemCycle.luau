@@ -14,7 +14,7 @@ local PHASES = {
 local function setNeonGlow(on: boolean)
 	for _, d in workspace.BrainWorld:GetDescendants() do
 		if d:IsA("PointLight") and d.Parent:IsA("BasePart") and d.Parent.Material == Enum.Material.Neon then
-			d.Brightness = on and 5 or 2.5
+			d.Brightness = on and 3.5 or 2.5
 		end
 	end
 	local spray = workspace.BrainWorld.BrainStemPlaza.GooFountain.MiniBrain:FindFirstChild("GooSpray")

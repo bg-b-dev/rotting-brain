@@ -631,7 +631,7 @@ function WorldBuilder.BuildLighting()
 		e.Parent = Lighting
 	end
 	ensure("Atmosphere", { Density = 0.28, Offset = 0, Color = Color3.fromRGB(120, 20, 90), Decay = Color3.fromRGB(60, 8, 50), Glare = 0, Haze = 0 })
-	ensure("BloomEffect", { Intensity = 1, Size = 30, Threshold = 1.2 })
+	ensure("BloomEffect", { Intensity = 0.5, Size = 24, Threshold = 2.2 })
 	ensure("ColorCorrectionEffect", { Saturation = 0.45, Contrast = 0.12, TintColor = Color3.fromRGB(255, 240, 250) })
 	for _, name in { "DepthOfField", "SunRays" } do
 		local e = Lighting:FindFirstChild(name)

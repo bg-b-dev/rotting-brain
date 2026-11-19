@@ -15,13 +15,13 @@ local FLOWER_COLORS = { Color3.fromRGB(255, 240, 80), Color3.fromRGB(255, 120, 2
 local function buildWave()
 	local m = Instance.new("Model")
 	m.Name = "TouchGrassWave"
-	local core = WorldBuilder.Part(m, { Name = "Core", Size = Vector3.new(4, WAVE.Height * 0.6, WAVE.Width), Position = Vector3.new(0, WAVE.Height * 0.3, 0), Color = WorldBuilder.Colors.Grass, Material = Enum.Material.Grass, CanCollide = false, CanQuery = false })
+	local core = WorldBuilder.Part(m, { Name = "Core", Size = Vector3.new(4, WAVE.Height * 0.6, WAVE.Width), Position = Vector3.new(0, WAVE.Height * 0.3, 0), Color = WorldBuilder.Colors.Grass, Material = Enum.Material.Neon, CanCollide = false, CanQuery = false })
 	m.PrimaryPart = core
 	local rng = Random.new(77)
 	for _ = 1, WAVE.Blades do
 		local h = rng:NextNumber(WAVE.Height * 0.5, WAVE.Height)
 		local z = rng:NextNumber(-WAVE.Width / 2, WAVE.Width / 2)
-		WorldBuilder.Part(m, { Name = "GrassBlade", Class = "WedgePart", Size = Vector3.new(2, h, rng:NextNumber(5, 9)), CFrame = CFrame.new(rng:NextNumber(-3, 3), h / 2, z) * CFrame.Angles(0, math.rad(90), rng:NextNumber(-0.25, 0.25)), Color = WorldBuilder.Colors.Grass:Lerp(Color3.fromRGB(30, 120, 30), rng:NextNumber(0, 0.6)), Material = Enum.Material.Grass, CanCollide = false, CanQuery = false })
+		WorldBuilder.Part(m, { Name = "GrassBlade", Class = "WedgePart", Size = Vector3.new(2, h, rng:NextNumber(5, 9)), CFrame = CFrame.new(rng:NextNumber(-3, 3), h / 2, z) * CFrame.Angles(0, math.rad(90), rng:NextNumber(-0.25, 0.25)), Color = WorldBuilder.Colors.Grass:Lerp(Color3.fromRGB(160, 255, 90), rng:NextNumber(0, 0.6)), Material = Enum.Material.SmoothPlastic, CanCollide = false, CanQuery = false })
 	end
 	for _ = 1, WAVE.Flowers do
 		local pos = Vector3.new(4, rng:NextNumber(4, WAVE.Height * 0.8), rng:NextNumber(-WAVE.Width / 2, WAVE.Width / 2))

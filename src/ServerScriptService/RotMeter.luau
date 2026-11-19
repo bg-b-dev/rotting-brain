@@ -19,7 +19,7 @@ function RotMeter.Add(player: Player, amount: number)
 		Economy.AddBuff(player, "Fully Rotted", FRENZY)
 		DataService.Bump(player, "FullyRotted", 1)
 		HudNotify.PopupOver(player, "FULLY ROTTED! x3", Color3.fromRGB(130, 255, 80), true)
-		HudNotify.Feed(nil, "🤢 " .. player.DisplayName .. " is FULLY ROTTED! Income x3 for 20s")
+		HudNotify.Feed(nil, "🤢 " .. player.DisplayName .. " is FULLY ROTTED! x3 income")
 		local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 		if root then
 			local burst = WorldBuilder.Part(workspace, { Name = "GooExplosion", Size = Vector3.one, Position = root.Position, Transparency = 1, CanCollide = false, CanQuery = false })

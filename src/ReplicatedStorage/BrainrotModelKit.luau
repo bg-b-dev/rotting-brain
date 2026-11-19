@@ -983,8 +983,8 @@ function BrainrotModelKit.AddRarityFx(m, def)
 	if rarity.Index >= 3 then
 		local l = Instance.new("PointLight")
 		l.Color = rarity.Color
-		l.Range = 6 + rarity.Index * 2
-		l.Brightness = 1.5
+		l.Range = 4 + rarity.Index
+		l.Brightness = 0.6
 		l.Parent = body
 	end
 	if rarity.Index >= 4 then
@@ -1119,9 +1119,9 @@ function BrainrotModelKit.AttachTag(m, entry, footer)
 	end
 	local bb = Instance.new("BillboardGui")
 	bb.Name = "NameTag"
-	bb.Size = UDim2.fromScale(9, 4)
+	bb.Size = UDim2.fromScale(7.5, 3.3)
 	bb.StudsOffsetWorldSpace = Vector3.new(0, m:GetExtentsSize().Y * 0.5 + 2.4, 0)
-	bb.MaxDistance = 70
+	bb.MaxDistance = 45
 	bb.LightInfluence = 0
 	local mut = entry.Mut and MutationConfig.ByName[entry.Mut]
 	local header = Instance.new("Frame")
@@ -1159,7 +1159,7 @@ function BrainrotModelKit.Build(entry, opts)
 	local rarity = RarityConfig.ByName[def.Rarity]
 	local m = BrainrotModelKit.BuildBase(def)
 	weldAll(m)
-	m:ScaleTo(rarity.Scale * (opts.scale or 1) * 1.3)
+	m:ScaleTo(rarity.Scale * (opts.scale or 1) * 1.1)
 	if opts.fx ~= false then
 		BrainrotModelKit.AddRarityFx(m, def)
 		weldAll(m)

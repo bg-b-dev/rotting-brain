@@ -40,9 +40,9 @@ end
 local function facing(line, pos)
 	local v = pos - line.Center
 	if math.abs(v.X) >= math.abs(v.Z) then
-		return Vector3.new(math.sign(v.X), 0, 0)
+		return Vector3.new(-math.sign(v.X), 0, 0)
 	end
-	return Vector3.new(0, 0, math.sign(v.Z))
+	return Vector3.new(0, 0, -math.sign(v.Z))
 end
 
 local function priceOf(entry)
