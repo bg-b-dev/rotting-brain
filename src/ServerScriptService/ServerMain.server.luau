@@ -3,7 +3,8 @@ local SSS = game:GetService("ServerScriptService")
 require(SSS.WorldBuilder).BuildWorld()
 
 local SERVICES = {
-	"DataService", "BrainCellEconomy", "LobeService", "CarryService", "SynapseBelt", "PlaytestControls",
+	"DataService", "BrainCellEconomy", "LobeService", "CarryService", "SynapseBelt", "StealService",
+	"MindBlockService", "FocusSlapService", "ProductivityPixieRaid", "BrainFogCannon", "PlaytestControls",
 }
 
 for _, name in SERVICES do
