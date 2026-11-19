@@ -31,6 +31,12 @@ function InputController.Start()
 	InputController.Register("F", function()
 		Remotes.Send("FocusSlap")
 	end)
+	local OPEN_KEYS = { Upgrades = "U", BrainWash = "R", Brainpedia = "B", Mart = "H", Blender = "G" }
+	Remotes.Get("OpenUI").OnClientEvent:Connect(function(name)
+		if OPEN_KEYS[name] then
+			InputController.Trigger(OPEN_KEYS[name])
+		end
+	end)
 	for _, k in InputController.Keys do
 		ContextActionService:BindAction("RottingBrain" .. k.Key, function(_, inputState)
 			if inputState == Enum.UserInputState.Begin then

@@ -180,4 +180,27 @@ function UiKit.Grid(parent: Instance, cell: Vector2, padding: number?)
 	return scroll
 end
 
+function UiKit.Viewport(parent: Instance, entry, props)
+	local BrainrotModelKit = require(game:GetService("ReplicatedStorage").BrainrotModelKit)
+	local vp = Instance.new("ViewportFrame")
+	vp.BackgroundTransparency = 1
+	vp.Ambient = Color3.fromRGB(210, 200, 210)
+	vp.LightColor = Color3.new(1, 1, 1)
+	vp.LightDirection = Vector3.new(-0.3, -1, 0.6)
+	for k, v in props or {} do
+		vp[k] = v
+	end
+	local model = BrainrotModelKit.Build(entry, { tag = false, fx = false })
+	model:PivotTo(CFrame.new())
+	model.Parent = vp
+	local cf, size = model:GetBoundingBox()
+	local cam = Instance.new("Camera")
+	cam.FieldOfView = 40
+	cam.CFrame = CFrame.lookAt(cf.Position + Vector3.new(size.X * 0.2, size.Y * 0.15, -math.max(size.X, size.Y, size.Z) * 1.55), cf.Position)
+	cam.Parent = vp
+	vp.CurrentCamera = cam
+	vp.Parent = parent
+	return vp, model
+end
+
 return UiKit

@@ -5,7 +5,8 @@ require(SSS.WorldBuilder).BuildWorld()
 local SERVICES = {
 	"DataService", "BrainCellEconomy", "LobeService", "CarryService", "SynapseBelt", "StealService",
 	"MindBlockService", "FocusSlapService", "ProductivityPixieRaid", "BrainFogCannon", "MutationService",
-	"RotMeter", "TouchGrassWave", "EventScheduler", "PlaytestControls",
+	"RotMeter", "TouchGrassWave", "EventScheduler", "UpgradeService",
+	"BrainWashRebirth", "Brainpedia", "PlaytestControls",
 }
 
 for _, name in SERVICES do
