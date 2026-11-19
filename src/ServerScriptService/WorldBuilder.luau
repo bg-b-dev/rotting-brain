@@ -363,7 +363,7 @@ function Builders.Lobe(spec, world, index)
 		p:SetAttribute("PadIndex", i)
 	end
 	local collect = Part(m, { Name = "CollectPad", Size = Vector3.new(4, 0.4, 3), CFrame = at(Layout.CollectPad + Vector3.new(0, 0.2, 0)), Color = C.Goo, Material = Enum.Material.Neon, CanCollide = false })
-	WorldBuilder.Billboard(collect, "COLLECT 🧠0", { Name = "Bank", Offset = Vector3.new(0, 3, 0), Size = UDim2.fromOffset(160, 40), Color = C.Goo })
+	WorldBuilder.Billboard(collect, "COLLECT 🧠0", { Name = "Bank", Offset = Vector3.new(0, 3, 0), Size = UDim2.fromScale(7, 1.6), MaxDistance = 80, Color = C.Goo })
 	local slots = model("CannonSlots", m)
 	for i, v in Layout.CannonSlots do
 		local s = Part(slots, { Name = "CannonSlot" .. i, Size = Vector3.new(3, 0.3, 3), CFrame = at(v + Vector3.new(0, 0.15, 0)), Color = C.Dark })
