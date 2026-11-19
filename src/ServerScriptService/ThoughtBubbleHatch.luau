@@ -26,7 +26,7 @@ function ThoughtBubbleHatch.Duration(p, kind)
 	return math.floor(k.Seconds * (1 - 0.06 * p.Upgrades.Thoughts) * (p.Perks.FastBubbles and 0.8 or 1))
 end
 
-local function buildBubble(kind, at: CFrame)
+function ThoughtBubbleHatch.BuildBubble(kind, at: CFrame)
 	local k = ThoughtBubbleHatch.Kinds[kind]
 	local m = Instance.new("Model")
 	m.Name = kind .. "ThoughtBubble"
@@ -58,7 +58,7 @@ function ThoughtBubbleHatch.Refresh(lobe)
 	end
 	for key, bubble in p.Bubbles do
 		local pad = WorldBuilder.Layout.BubblePads[tonumber(key)]
-		local m, label, prompt = buildBubble(bubble.Kind, lobe.CF * CFrame.new(pad))
+		local m, label, prompt = ThoughtBubbleHatch.BuildBubble(bubble.Kind, lobe.CF * CFrame.new(pad))
 		m.Parent = lobe.Model
 		prompt.Triggered:Connect(function(player)
 			if player == owner then

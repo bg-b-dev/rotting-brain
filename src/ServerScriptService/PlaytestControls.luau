@@ -47,6 +47,42 @@ function Actions.Summary(player)
 	return string.format("cells=%d podiums=%d carrying=%d lobe=%d rot=%d", p.Cells, podiums, #rt.Carrying, rt.Lobe and rt.Lobe.Index or 0, rt.Rot or 0)
 end
 
+local SHOWCASE = {
+	{ 53, "Golden", 4 }, { 57, nil, 3 }, { 50, "Galaxy Brain", 2 }, { 48, "Rizzed", 3 }, { 41, "Sigma", 2 }, { 49, nil, 1 },
+	{ 44, "Brain Freeze", 2 }, { 39, "Golden", 5 }, { 46, nil, 2 }, { 34, "Max Aura", 1 }, { 36, "Rotten", 3 }, { 42, "Ohio", 1 },
+	{ 54, nil, 2 }, { 47, "Golden", 1 }, { 40, nil, 2 }, { 33, "Rizzed", 1 }, { 51, nil, 1 }, { 30, "Brain Freeze", 2 },
+}
+
+function Actions.SetupShowcase(player)
+	local p, rt = service("DataService").Get(player), service("DataService").Rt(player)
+	local LobeService = service("LobeService")
+	local lobe = LobeService.LobeOf(player)
+	p.Washes, p.AuraPoints, p.Cells, p.LobeLevel = 4, 6, 2.43e9, 5
+	p.Upgrades = { Income = 8, Speed = 6, Luck = 7, Defense = 5, Thoughts = 10 }
+	p.Gear = { SlapperSupremo = true, SigmaSneakers = true, NoodleArm = true }
+	for id = 1, 41 do
+		p.Pedia[tostring(id)] = { Normal = true, Golden = id % 3 == 0 or nil, Rizzed = id % 5 == 0 or nil }
+	end
+	LobeService.ClearAll(lobe)
+	p.Podiums = {}
+	lobe.Entries = p.Podiums
+	lobe.Level = 5
+	for _, row in SHOWCASE do
+		LobeService.Place(lobe, { Id = row[1], Mut = row[2], Lv = row[3] })
+	end
+	LobeService.ApplyTier(lobe)
+	LobeService.UpdateLabel(lobe)
+	p.Bubbles = { ["1"] = { Kind = "Galaxy", ReadyAt = os.time() + 151 }, ["2"] = { Kind = "Gold", ReadyAt = os.time() + 43 }, ["3"] = { Kind = "Gold", ReadyAt = os.time() }, ["4"] = { Kind = "Basic", ReadyAt = os.time() + 12 } }
+	service("ThoughtBubbleHatch").Refresh(lobe)
+	require(script.Parent.GameSignals).Emit("LobeUpgraded", player, lobe)
+	rt.Rot = 87
+	service("Brainpedia").Record(player, { Id = 42, Lv = 1 })
+end
+
+function Actions.Capture(on)
+	workspace:SetAttribute("Capture16x9", on)
+end
+
 function Actions.Call(serviceName, method, ...)
 	local result = service(serviceName)[method](...)
 	return type(result) ~= "table" and result or nil

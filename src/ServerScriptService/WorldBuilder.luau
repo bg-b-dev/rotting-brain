@@ -292,11 +292,15 @@ function Builders.MemeLobe(spec, world)
 		local dir = Vector3.new(rng:NextNumber(-1, 1), rng:NextNumber(0, 1), rng:NextNumber(-1, 1)).Unit
 		local n = ball(neurons, center + dir * (r + 0.8), 2.2, i % 2 == 0 and C.Nerve or C.Goo, Enum.Material.Neon, "Neuron")
 		glow(n, n.Color, 14, 3)
+		sparkles(n, n.Color, 6, "NeuronSparks").Speed = NumberRange.new(4, 8)
 	end
 	for i = 1, 8 do
 		local a = math.rad(i * 45)
 		local p = center + Vector3.new(math.cos(a) * r * 0.75, -r * 0.6, math.sin(a) * r * 0.75)
-		Part(m, { Name = "GooDrip", Size = Vector3.new(1.5, 8, 1.5), Position = p, Color = C.Goo, Material = Enum.Material.Neon, CanCollide = false })
+		local drip = Part(m, { Name = "GooDrip", Size = Vector3.new(1.5, 8, 1.5), Position = p, Color = C.Goo, Material = Enum.Material.Neon, CanCollide = false })
+		local drops = sparkles(drip, C.Goo, 4, "GooDrops")
+		drops.Acceleration = Vector3.new(0, -25, 0)
+		drops.EmissionDirection = Enum.NormalId.Bottom
 	end
 	local mouth = Part(m, { Name = "MemeMouth", Shape = Enum.PartType.Cylinder, Size = Vector3.new(2, 16, 16), CFrame = CFrame.new(0, 9, -104) * CFrame.Angles(0, math.rad(90), 0), Color = C.Dark, CanCollide = false })
 	sparkles(mouth, C.Goo, 20)
@@ -395,6 +399,15 @@ function Builders.BrainStemPlaza(spec, world)
 	spray.Acceleration = Vector3.new(0, -25, 0)
 	spray.SpreadAngle = Vector2.new(30, 30)
 	spray.EmissionDirection = Enum.NormalId.Top
+	local confetti = sparkles(top, C.Cap, 14, "Confetti")
+	confetti.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, C.Cap), ColorSequenceKeypoint.new(0.5, C.Yellow), ColorSequenceKeypoint.new(1, C.Cyan) })
+	confetti.Speed = NumberRange.new(16, 22)
+	confetti.Acceleration = Vector3.new(0, -9, 0)
+	confetti.Lifetime = NumberRange.new(3, 4)
+	confetti.Size = NumberSequence.new(0.6)
+	confetti.Rotation = NumberRange.new(0, 360)
+	confetti.SpreadAngle = Vector2.new(50, 50)
+	confetti.EmissionDirection = Enum.NormalId.Top
 	local spawn = Instance.new("SpawnLocation")
 	spawn.Name = "PlazaSpawn"
 	spawn.Anchored = true
@@ -617,9 +630,9 @@ function WorldBuilder.BuildLighting()
 		end
 		e.Parent = Lighting
 	end
-	ensure("Atmosphere", { Density = 0.22, Offset = 0.1, Color = Color3.fromRGB(255, 180, 220), Decay = Color3.fromRGB(150, 60, 140), Glare = 0.2, Haze = 0.6 })
-	ensure("BloomEffect", { Intensity = 0.8, Size = 30, Threshold = 1.6 })
-	ensure("ColorCorrectionEffect", { Saturation = 0.25, Contrast = 0.08, TintColor = Color3.fromRGB(255, 240, 250) })
+	ensure("Atmosphere", { Density = 0.28, Offset = 0, Color = Color3.fromRGB(120, 20, 90), Decay = Color3.fromRGB(60, 8, 50), Glare = 0, Haze = 0 })
+	ensure("BloomEffect", { Intensity = 1, Size = 30, Threshold = 1.2 })
+	ensure("ColorCorrectionEffect", { Saturation = 0.45, Contrast = 0.12, TintColor = Color3.fromRGB(255, 240, 250) })
 	for _, name in { "DepthOfField", "SunRays" } do
 		local e = Lighting:FindFirstChild(name)
 		if e then

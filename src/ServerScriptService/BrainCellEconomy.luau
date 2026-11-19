@@ -161,7 +161,7 @@ function BrainCellEconomy.Start()
 							local model = lobe.Models[k]
 							if model then
 								local amount = BrainrotModelKit.Income(p.Podiums[k]) * BrainCellEconomy.Multiplier(player) * 3
-								HudNotify.Popup(nil, "+" .. NumberFormat.Cells(amount), Color3.fromRGB(150, 255, 110), model:GetPivot().Position + Vector3.new(0, 6, 0))
+								HudNotify.Popup(nil, "+" .. NumberFormat.Cells(amount), Color3.fromRGB(150, 255, 110), model:GetPivot().Position + Vector3.new(0, 7, 0), true)
 							end
 						end
 					end

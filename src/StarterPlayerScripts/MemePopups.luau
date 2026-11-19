@@ -16,7 +16,7 @@ function MemePopups.Show(text: string, color: Color3, position: Vector3, big: bo
 	bb.Adornee = att
 	bb.AlwaysOnTop = true
 	bb.LightInfluence = 0
-	bb.Size = big and UDim2.fromScale(12, 3) or UDim2.fromScale(7, 1.8)
+	bb.Size = big and UDim2.fromScale(20, 4.6) or UDim2.fromScale(11, 2.6)
 	local t = Instance.new("TextLabel")
 	t.Size = UDim2.fromScale(1, 1)
 	t.BackgroundTransparency = 1

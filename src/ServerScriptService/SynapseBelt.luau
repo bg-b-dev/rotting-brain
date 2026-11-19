@@ -147,13 +147,13 @@ function SynapseBelt.Start()
 	folder.Name = "BeltMemes"
 	folder.Parent = workspace
 	local L = WorldBuilder.Layout
-	makeLine("Main", L.BeltPath, Vector3.new(0, 0, -37.5), 7, 2.4, false)
+	makeLine("Main", L.BeltPath, Vector3.new(0, 0, -37.5), 7, 1.5, false)
 	local s = L.Subconscious
 	makeLine("Dream", { s + Vector3.new(0, 1.6, -22), s + Vector3.new(0, 1.6, 6) }, s + Vector3.new(-20, 0, 0), 3, 9, true)
 	local pulse = WorldBuilder.Part(workspace.BrainWorld.SynapseBelt, { Name = "SynapsePulse", Shape = Enum.PartType.Ball, Size = Vector3.one * 2.4, Color = WorldBuilder.Colors.Nerve, Material = Enum.Material.Neon, CanCollide = false, CanQuery = false })
 	local pulseD = 0
 	task.spawn(flashNeurons)
-	for _ = 1, 14 do
+	for _ = 1, 30 do
 		SynapseBelt.Spawn(SynapseBelt.Lines.Main, { At = rng:NextNumber(0, SynapseBelt.Lines.Main.Total - 5) })
 	end
 	RunService.Heartbeat:Connect(function(dt)
@@ -164,7 +164,7 @@ function SynapseBelt.Start()
 				line.Timer += dt
 				if line.Timer >= line.Interval / (SynapseBelt.ForceMutation and 2 or 1) then
 					line.Timer = 0
-					if #line.Memes < 30 then
+					if #line.Memes < 45 then
 						SynapseBelt.Spawn(line)
 					end
 				end

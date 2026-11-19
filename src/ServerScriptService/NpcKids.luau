@@ -7,6 +7,9 @@ local LobeService = require(script.Parent.LobeService)
 local GameSignals = require(script.Parent.GameSignals)
 local HudNotify = require(script.Parent.HudNotify)
 local MostRottedBoard = require(script.Parent.MostRottedBoard)
+local ThoughtBubbleHatch = require(script.Parent.ThoughtBubbleHatch)
+local WorldBuilder = require(script.Parent.WorldBuilder)
+local BrainrotModelKit = require(RS.BrainrotModelKit)
 
 local NpcKids = { Rigs = {} }
 
@@ -82,19 +85,35 @@ local function fillLobe(lobe)
 	end
 	local name = NAMES[lobe.Index]
 	lobe.NpcName = name
-	lobe.Level = rng:NextInteger(1, 3)
+	lobe.Level = rng:NextInteger(3, 5)
 	LobeService.ClearAll(lobe)
-	for _ = 1, rng:NextInteger(5, 8) do
-		local rarity = RarityConfig.Roll(rng, 1.2)
-		if rarity.Index > 5 then
-			rarity = RarityConfig.List[5]
+	for _ = 1, LobeService.Capacity(lobe) - rng:NextInteger(0, 2) do
+		local rarity = RarityConfig.Roll(rng, 1.4)
+		if rarity.Index > 6 then
+			rarity = RarityConfig.List[6]
 		end
 		local def = BrainrotCatalog.PickFromRarity(rng, rarity.Name, false)
 		LobeService.Place(lobe, { Id = def.Id, Mut = MutationConfig.Roll(rng, 2, false), Lv = rng:NextInteger(1, 3) })
 	end
 	LobeService.ApplyTier(lobe)
 	LobeService.UpdateLabel(lobe)
-	NpcKids.Rigs[lobe.Index] = buildKid(name, lobe.CF * CFrame.new(-3, 4.6, -11))
+	local decor = Instance.new("Folder")
+	decor.Name = "NpcDecor"
+	decor.Parent = lobe.Model
+	for i = 1, 2 do
+		local bubble, label = ThoughtBubbleHatch.BuildBubble(({ "Basic", "Gold", "Galaxy" })[rng:NextInteger(1, 3)], lobe.CF * CFrame.new(WorldBuilder.Layout.BubblePads[i]))
+		label.Text = "? " .. rng:NextInteger(0, 4) .. ":" .. string.format("%02d", rng:NextInteger(0, 59))
+		bubble.Parent = decor
+	end
+	local kid = buildKid(name, lobe.CF * CFrame.new(-3, 4.6, -11))
+	if kid then
+		local def = BrainrotCatalog.PickFromRarity(rng, RarityConfig.Roll(rng, 1.5).Name, false)
+		local held = BrainrotModelKit.Build({ Id = def.Id, Lv = 1 }, { scale = 0.5, tag = false })
+		held:PivotTo(kid:GetPivot() * CFrame.new(0, 4.4, 0))
+		held.Parent = decor
+		kid.Parent = decor
+	end
+	NpcKids.Rigs[lobe.Index] = kid
 	MostRottedBoard.Extra[lobe.Index] = { Name = name, Cells = rng:NextInteger(2, 900) * 10 ^ rng:NextInteger(2, 6), Found = rng:NextInteger(3, 41) }
 end
 
@@ -104,6 +123,10 @@ local function evict(lobe)
 		NpcKids.Rigs[lobe.Index] = nil
 	end
 	MostRottedBoard.Extra[lobe.Index] = nil
+	local decor = lobe.Model:FindFirstChild("NpcDecor")
+	if decor then
+		decor:Destroy()
+	end
 	lobe.NpcName = nil
 end
 

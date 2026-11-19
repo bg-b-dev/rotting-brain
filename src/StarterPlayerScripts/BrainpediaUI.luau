@@ -14,14 +14,14 @@ local BrainpediaUI = {}
 local tiles = {}
 
 function BrainpediaUI.Start()
-	local win, content = UiKit.Window("Brainpedia", "📖 BRAINPEDIA", Vector2.new(940, 580), C.Pink)
+	local win, content = UiKit.Window("Brainpedia", "📖 BRAINPEDIA", Vector2.new(940, 620), C.Pink)
 	local header = UiKit.Label(content, { Size = UDim2.new(1, 0, 0, 26), Text = "", TextColor3 = C.Yellow, TextXAlignment = Enum.TextXAlignment.Left })
 	local gridHolder = Instance.new("Frame")
 	gridHolder.BackgroundTransparency = 1
 	gridHolder.Position = UDim2.fromOffset(0, 32)
 	gridHolder.Size = UDim2.new(1, 0, 1, -100)
 	gridHolder.Parent = content
-	local grid = UiKit.Grid(gridHolder, Vector2.new(82, 104), 8)
+	local grid = UiKit.Grid(gridHolder, Vector2.new(82, 124), 8)
 	local info = UiKit.Frame(content, { Size = UDim2.new(1, 0, 0, 60), Position = UDim2.new(0, 0, 1, -60), BackgroundColor3 = C.PanelLight, Stroke = C.Pink })
 	local infoText = UiKit.Label(info, { Size = UDim2.new(1, -20, 1, -10), Position = UDim2.fromOffset(10, 5), Text = "Hover a tile. Every 10 found = +10% income. 60 found = income x2.", TextWrapped = true })
 	local built = false
@@ -32,10 +32,12 @@ function BrainpediaUI.Start()
 			local rarity = RarityConfig.ByName[def.Rarity]
 			local tile = UiKit.Frame(grid, { LayoutOrder = def.Id, BackgroundColor3 = C.Panel, Stroke = rarity.Color, Corner = 8 })
 			local vp = UiKit.Viewport(tile, { Id = def.Id, Lv = 1 }, { Size = UDim2.new(1, 0, 0, 64) })
-			local name = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 18), Position = UDim2.fromOffset(3, 64), Text = "???", TextColor3 = rarity.Color })
+			local name = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 18), Position = UDim2.fromOffset(3, 64), Text = def.Name, TextColor3 = rarity.Color })
+			local status = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 16), Position = UDim2.fromOffset(3, 84), Text = "", TextColor3 = C.Goo })
+			local badge = UiKit.Label(tile, { Size = UDim2.fromOffset(22, 22), Position = UDim2.new(1, -24, 0, 2), Text = "🔒" })
 			local dots = {}
 			for i, mut in MutationConfig.List do
-				dots[mut.Name] = UiKit.Frame(tile, { Size = UDim2.fromOffset(7, 7), Position = UDim2.fromOffset(5 + (i - 1) * 9, 88), BackgroundColor3 = mut.Color, BackgroundTransparency = 0.85, Corner = 4 })
+				dots[mut.Name] = UiKit.Frame(tile, { Size = UDim2.fromOffset(7, 7), Position = UDim2.fromOffset(5 + (i - 1) * 9, 106), BackgroundColor3 = mut.Color, BackgroundTransparency = 0.85, Corner = 4 })
 			end
 			local hover = Instance.new("TextButton")
 			hover.BackgroundTransparency = 1
@@ -47,10 +49,10 @@ function BrainpediaUI.Start()
 				if found then
 					infoText.Text = def.Name .. " · " .. def.Rarity .. " · " .. NumberFormat.Cells(def.Income) .. "/s · \"" .. def.Caption .. "\""
 				else
-					infoText.Text = "??? · " .. def.Rarity .. " · Not found yet. Keep rotting."
+					infoText.Text = def.Name .. " · " .. def.Rarity .. " · 🔒 NOT FOUND. Keep rotting."
 				end
 			end)
-			tiles[def.Id] = { Viewport = vp, Name = name, Dots = dots, Def = def }
+			tiles[def.Id] = { Viewport = vp, Name = name, Status = status, Badge = badge, Dots = dots, Def = def }
 		end
 	end
 
@@ -67,9 +69,12 @@ function BrainpediaUI.Start()
 			if muts then
 				found += 1
 			end
-			tile.Viewport.ImageColor3 = muts and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
-			tile.Viewport.ImageTransparency = muts and 0 or 0.35
-			tile.Name.Text = muts and tile.Def.Name or "???"
+			tile.Viewport.ImageColor3 = muts and Color3.new(1, 1, 1) or Color3.fromRGB(120, 110, 125)
+			tile.Viewport.ImageTransparency = muts and 0 or 0.45
+			tile.Name.TextTransparency = muts and 0 or 0.35
+			tile.Status.Text = muts and ("+" .. NumberFormat.Cells(tile.Def.Income) .. "/s") or "NOT FOUND"
+			tile.Status.TextColor3 = muts and C.Goo or C.Gray
+			tile.Badge.Text = muts and "✅" or "🔒"
 			for mutName, dot in tile.Dots do
 				dot.BackgroundTransparency = (muts and muts[mutName]) and 0 or 0.85
 			end

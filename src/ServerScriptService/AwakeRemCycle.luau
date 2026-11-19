@@ -8,7 +8,7 @@ local AWAKE_SECONDS, REM_SECONDS, FADE = 150, 90, 8
 
 local PHASES = {
 	Awake = { ClockTime = 14, Ambient = Color3.fromRGB(110, 70, 110), OutdoorAmbient = Color3.fromRGB(160, 110, 160), Brightness = 2.2 },
-	REM = { ClockTime = 0.5, Ambient = Color3.fromRGB(70, 30, 110), OutdoorAmbient = Color3.fromRGB(90, 50, 150), Brightness = 1 },
+	REM = { ClockTime = 0.5, Ambient = Color3.fromRGB(140, 70, 170), OutdoorAmbient = Color3.fromRGB(150, 80, 180), Brightness = 1.2 },
 }
 
 local function setNeonGlow(on: boolean)

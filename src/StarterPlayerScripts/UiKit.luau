@@ -11,8 +11,16 @@ local C = UiKit.Colors
 
 local scales = {}
 
-local function updateScales()
+local function viewport()
 	local vp = workspace.CurrentCamera.ViewportSize
+	if workspace:GetAttribute("Capture16x9") then
+		return Vector2.new(vp.X, math.min(vp.Y, vp.X * 9 / 16))
+	end
+	return vp
+end
+
+local function updateScales()
+	local vp = viewport()
 	local s = math.clamp(math.min(vp.X / 1280, vp.Y / 720), 0.5, 1.4)
 	for _, uiScale in scales do
 		uiScale.Scale = s
@@ -36,11 +44,12 @@ function UiKit.Screen(name: string, order: number?)
 	uiScale.Parent = root
 	table.insert(scales, uiScale)
 	local function fit()
-		local vp = workspace.CurrentCamera.ViewportSize
+		local vp = viewport()
 		updateScales()
 		root.Size = UDim2.fromOffset(vp.X / uiScale.Scale, vp.Y / uiScale.Scale)
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+	workspace:GetAttributeChangedSignal("Capture16x9"):Connect(fit)
 	fit()
 	gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 	return gui, root

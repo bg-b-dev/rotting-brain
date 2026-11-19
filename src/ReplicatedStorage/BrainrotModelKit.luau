@@ -1119,32 +1119,34 @@ function BrainrotModelKit.AttachTag(m, entry, footer)
 	end
 	local bb = Instance.new("BillboardGui")
 	bb.Name = "NameTag"
-	bb.Size = UDim2.fromScale(7, 2.6)
-	bb.StudsOffsetWorldSpace = Vector3.new(0, m:GetExtentsSize().Y * 0.5 + 1.8, 0)
-	bb.MaxDistance = 60
+	bb.Size = UDim2.fromScale(9, 4)
+	bb.StudsOffsetWorldSpace = Vector3.new(0, m:GetExtentsSize().Y * 0.5 + 2.4, 0)
+	bb.MaxDistance = 70
 	bb.LightInfluence = 0
-	local frame = Instance.new("Frame")
-	frame.Size = UDim2.fromScale(1, 1)
-	frame.BackgroundColor3 = Color3.fromRGB(15, 5, 20)
-	frame.BackgroundTransparency = 0.35
-	frame.Parent = bb
-	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+	local mut = entry.Mut and MutationConfig.ByName[entry.Mut]
+	local header = Instance.new("Frame")
+	header.Size = UDim2.fromScale(0.86, 0.26)
+	header.Position = UDim2.fromScale(0.07, 0)
+	header.BackgroundColor3 = rarity.Color
+	header.Parent = bb
+	Instance.new("UICorner", header).CornerRadius = UDim.new(0.4, 0)
+	local income = footer or ("+" .. NumberFormat.Cells(BrainrotModelKit.Income(entry)) .. "/s" .. ((entry.Lv or 1) > 1 and (" · Lv " .. entry.Lv) or ""))
 	local lines = {
-		{ def.Name, WHITE },
-		{ def.Rarity .. (entry.Mut and (" · " .. entry.Mut) or ""), entry.Mut and MutationConfig.ByName[entry.Mut].Color or rarity.Color },
-		{ footer or (NumberFormat.Cells(BrainrotModelKit.Income(entry)) .. "/s · Lv " .. (entry.Lv or 1)), Color3.fromRGB(150, 255, 110) },
+		{ header, string.upper(def.Rarity) .. (mut and (" · " .. string.upper(mut.Name)) or ""), Color3.fromRGB(25, 8, 30), 0, 1, 1 },
+		{ bb, def.Name, WHITE, 0.27, 0.38, 0 },
+		{ bb, income, Color3.fromRGB(150, 255, 110), 0.65, 0.35, 0 },
 	}
-	for i, line in lines do
+	for _, line in lines do
 		local t = Instance.new("TextLabel")
-		t.Size = UDim2.new(1, -8, 1 / 3, 0)
-		t.Position = UDim2.new(0, 4, (i - 1) / 3, 0)
+		t.Size = UDim2.fromScale(1, line[5])
+		t.Position = UDim2.fromScale(0, line[4])
 		t.BackgroundTransparency = 1
-		t.Text = line[1]
-		t.TextColor3 = line[2]
+		t.Text = line[2]
+		t.TextColor3 = line[3]
 		t.TextScaled = true
 		t.Font = Enum.Font.FredokaOne
-		t.TextStrokeTransparency = 0.4
-		t.Parent = frame
+		t.TextStrokeTransparency = line[6]
+		t.Parent = line[1]
 	end
 	bb.Parent = m.PrimaryPart
 	return bb
@@ -1157,7 +1159,7 @@ function BrainrotModelKit.Build(entry, opts)
 	local rarity = RarityConfig.ByName[def.Rarity]
 	local m = BrainrotModelKit.BuildBase(def)
 	weldAll(m)
-	m:ScaleTo(rarity.Scale * (opts.scale or 1))
+	m:ScaleTo(rarity.Scale * (opts.scale or 1) * 1.3)
 	if opts.fx ~= false then
 		BrainrotModelKit.AddRarityFx(m, def)
 		weldAll(m)

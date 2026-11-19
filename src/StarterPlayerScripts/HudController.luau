@@ -10,6 +10,7 @@ local C = UiKit.Colors
 
 local HudController = {}
 
+local ACTION_COLORS = { L = Color3.fromRGB(225, 60, 155), F = Color3.fromRGB(245, 130, 30), G = Color3.fromRGB(70, 175, 55), U = Color3.fromRGB(215, 165, 20), R = Color3.fromRGB(35, 160, 215), B = Color3.fromRGB(140, 75, 225), H = Color3.fromRGB(220, 60, 60) }
 local BUFF_ICONS = { ["Sigma Mindset"] = "🗿", ["Energy Drink"] = "⚡", ["Fully Rotted"] = "🤢", ["Mind Block"] = "🛡️" }
 
 local ui = {}
@@ -52,7 +53,13 @@ local function buildTop(root)
 	feed.Position = UDim2.fromOffset(12, 132)
 	feed.Parent = root
 	for i = 1, 3 do
-		feedLines[i] = UiKit.Label(feed, { Size = UDim2.new(1, 0, 0, 28), Position = UDim2.fromOffset(0, (i - 1) * 32), Text = "", TextXAlignment = Enum.TextXAlignment.Left, TextTransparency = 0, TextStrokeTransparency = 0.2 })
+		local line = UiKit.Label(feed, { Size = UDim2.fromOffset(0, 28), AutomaticSize = Enum.AutomaticSize.X, Position = UDim2.fromOffset(0, (i - 1) * 32), Text = "", TextScaled = false, TextSize = 19, Visible = false, BackgroundTransparency = 0.2, BackgroundColor3 = Color3.fromRGB(20, 6, 28), TextStrokeTransparency = 0.4 })
+		local pad = Instance.new("UIPadding")
+		pad.PaddingLeft = UDim.new(0, 10)
+		pad.PaddingRight = UDim.new(0, 10)
+		pad.Parent = line
+		Instance.new("UICorner", line).CornerRadius = UDim.new(0, 8)
+		feedLines[i] = line
 	end
 end
 
@@ -64,24 +71,23 @@ local function buildBottom(root)
 	local bar = Instance.new("Frame")
 	bar.Name = "ActionBar"
 	bar.BackgroundTransparency = 1
-	bar.Size = UDim2.fromOffset(#InputController.Keys * 92, 78)
+	bar.Size = UDim2.fromOffset(#InputController.Keys * 136, 74)
 	bar.AnchorPoint = Vector2.new(0.5, 1)
-	bar.Position = UDim2.new(0.5, 0, 1, -10)
+	bar.Position = UDim2.new(0.5, 0, 1, -12)
 	bar.Parent = root
 	ui.Actions = {}
 	for i, k in InputController.Keys do
-		local b = UiKit.Button(bar, "", { Name = k.Key, Size = UDim2.fromOffset(84, 74), Position = UDim2.fromOffset((i - 1) * 92 + 4, 2), BackgroundColor3 = C.Panel, BackgroundTransparency = 0.1 }, function()
+		local b = UiKit.Button(bar, "", { Name = k.Key, Size = UDim2.fromOffset(128, 70), Position = UDim2.fromOffset((i - 1) * 136 + 4, 2), BackgroundColor3 = ACTION_COLORS[k.Key] }, function()
 			InputController.Trigger(k.Key)
 		end)
 		local stroke = Instance.new("UIStroke")
-		stroke.Color = C.Pink
+		stroke.Color = C.White
 		stroke.Thickness = 2
+		stroke.Transparency = 0.3
 		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 		stroke.Parent = b
-		UiKit.Label(b, { Size = UDim2.new(1, 0, 0, 30), Text = k.Icon })
-		UiKit.Label(b, { Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 30), Text = k.Label, TextColor3 = C.White })
-		local keyLabel = UiKit.Label(b, { Name = "Key", Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 48), Text = "[" .. k.Key .. "]", TextColor3 = C.Yellow })
-		ui.Actions[k.Key] = keyLabel
+		UiKit.Label(b, { Size = UDim2.new(1, 0, 0, 30), Text = string.upper(k.Label) .. " [" .. k.Key .. "]", TextStrokeTransparency = 0.2 })
+		ui.Actions[k.Key] = UiKit.Label(b, { Name = "Status", Size = UDim2.new(1, 0, 0, 26), Position = UDim2.fromOffset(0, 34), Text = "READY", TextStrokeTransparency = 0.2 })
 	end
 
 	local glow = Instance.new("Frame")
@@ -145,17 +151,32 @@ local function render(s)
 		ui.CarryText.Text = "CARRYING: " .. table.concat(names, " + ") .. " -> RUN BACK TO YOUR LOBE"
 		ui.CarryText.TextColor3 = RarityConfig.ByName[carrying[1].Rarity].Color:Lerp(C.Yellow, 0.4)
 	end
-	ui.Actions.L.Text = (s.MindBlockCd or 0) > 0 and NumberFormat.Clock(s.MindBlockCd) or "[L]"
-	ui.Actions.F.Text = (s.SlapCd or 0) > 0 and "..." or "[F]"
+	local clock = NumberFormat.Clock
+	ui.Actions.L.Text = (s.MindBlockLeft or 0) > 0 and ("ON " .. clock(s.MindBlockLeft)) or (s.MindBlockCd or 0) > 0 and clock(s.MindBlockCd) or "READY"
+	ui.Actions.F.Text = (s.SlapCd or 0) > 0 and "..." or "READY"
+	ui.Actions.G.Text = s.BlendJob and clock(s.BlendJob.Left) or (#(s.BlendOptions or {}) > 0 and (#s.BlendOptions .. " READY") or "NEED 3x")
+	local ups, gear = 0, 0
+	for _, v in s.Upgrades or {} do
+		ups += v
+	end
+	for _ in s.Gear or {} do
+		gear += 1
+	end
+	ui.Actions.U.Text = ups .. "/50"
+	ui.Actions.R.Text = s.NextWash and (s.NextWash.Ready and "READY" or s.NextWash.Cost) or "MAX"
+	ui.Actions.B.Text = (s.Found or 0) .. "/60"
+	ui.Actions.H.Text = gear .. "/4 GEAR"
 end
 
 function HudController.Feed(text: string)
 	table.insert(feedLines, 1, table.remove(feedLines))
 	for i, line in feedLines do
 		line.Position = UDim2.fromOffset(0, (i - 1) * 32)
-		line.TextTransparency = (i - 1) * 0.25
+		line.TextTransparency = (i - 1) * 0.2
+		line.BackgroundTransparency = 0.2 + (i - 1) * 0.2
 	end
 	feedLines[1].Text = text
+	feedLines[1].Visible = true
 end
 
 function HudController.Start()
