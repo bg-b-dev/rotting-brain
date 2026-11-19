@@ -38,7 +38,12 @@ function Actions.Summary(player)
 end
 
 function Actions.Call(serviceName, method, ...)
-	return service(serviceName)[method](...)
+	local result = service(serviceName)[method](...)
+	return type(result) ~= "table" and result or nil
+end
+
+function Actions.Event(name)
+	task.spawn(service("EventScheduler").Trigger, name)
 end
 
 function PlaytestControls.Start()
