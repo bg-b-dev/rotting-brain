@@ -22,6 +22,16 @@ function Actions.BuyFirstMeme(player)
 	service("SynapseBelt").Buy(player, line, meme)
 end
 
+function Actions.GiveBrainrot(player, id, mut, lv)
+	local entry = { Id = id, Mut = mut, Lv = lv or 1 }
+	service("LobeService").Place(service("LobeService").LobeOf(player), entry)
+	require(script.Parent.GameSignals).Emit("Acquired", player, entry, "gift")
+end
+
+function Actions.GoTo(player, x, y, z)
+	player.Character:PivotTo(CFrame.new(x, y, z))
+end
+
 function Actions.GoHome(player)
 	local lobe = service("LobeService").LobeOf(player)
 	player.Character:PivotTo(lobe.CF * CFrame.new(0, 4, -6))
