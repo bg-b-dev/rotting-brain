@@ -1,6 +1,6 @@
 local CONTROLLERS = {
 	"ClientState", "InputController", "HudController", "MemePopups", "CarryController",
-	"UpgradeUI", "BrainWashUI", "BrainpediaUI", "CatchCardUI", "BlenderUI",
+	"UpgradeUI", "BrainWashUI", "BrainpediaUI", "CatchCardUI", "BlenderUI", "MartUI", "TaskUI", "MemeQuizUI",
 }
 
 for _, name in CONTROLLERS do

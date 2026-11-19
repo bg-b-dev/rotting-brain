@@ -7,7 +7,8 @@ local SERVICES = {
 	"MindBlockService", "FocusSlapService", "ProductivityPixieRaid", "BrainFogCannon", "MutationService",
 	"RotMeter", "TouchGrassWave", "EventScheduler", "UpgradeService",
 	"BrainWashRebirth", "Brainpedia", "MemeBlender", "ThoughtBubbleHatch",
-	"MostRottedBoard", "PlaytestControls",
+	"MostRottedBoard", "DopamineMart", "BrainWheel", "BrainTasks",
+	"DailyRewards", "PetFollower", "SubconsciousGate", "BrainTeaserCorner", "PlaytestControls",
 }
 
 for _, name in SERVICES do
