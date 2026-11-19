@@ -605,8 +605,8 @@ function Builders.Scenery(spec, world)
 end
 
 function WorldBuilder.BuildLighting()
-	Lighting.Ambient = Color3.fromRGB(90, 50, 90)
-	Lighting.OutdoorAmbient = Color3.fromRGB(150, 100, 150)
+	Lighting.Ambient = Color3.fromRGB(110, 70, 110)
+	Lighting.OutdoorAmbient = Color3.fromRGB(160, 110, 160)
 	Lighting.Brightness = 2.2
 	Lighting.ClockTime = 14
 	Lighting.GlobalShadows = true
@@ -617,7 +617,7 @@ function WorldBuilder.BuildLighting()
 		end
 		e.Parent = Lighting
 	end
-	ensure("Atmosphere", { Density = 0.32, Offset = 0.2, Color = Color3.fromRGB(255, 170, 215), Decay = Color3.fromRGB(150, 60, 140), Glare = 0.2, Haze = 1.4 })
+	ensure("Atmosphere", { Density = 0.22, Offset = 0.1, Color = Color3.fromRGB(255, 180, 220), Decay = Color3.fromRGB(150, 60, 140), Glare = 0.2, Haze = 0.6 })
 	ensure("BloomEffect", { Intensity = 0.8, Size = 30, Threshold = 1.6 })
 	ensure("ColorCorrectionEffect", { Saturation = 0.25, Contrast = 0.08, TintColor = Color3.fromRGB(255, 240, 250) })
 	for _, name in { "DepthOfField", "SunRays" } do

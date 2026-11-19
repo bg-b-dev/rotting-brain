@@ -8,13 +8,19 @@ local SERVICES = {
 	"RotMeter", "TouchGrassWave", "EventScheduler", "UpgradeService",
 	"BrainWashRebirth", "Brainpedia", "MemeBlender", "ThoughtBubbleHatch",
 	"MostRottedBoard", "DopamineMart", "BrainWheel", "BrainTasks",
-	"DailyRewards", "PetFollower", "SubconsciousGate", "BrainTeaserCorner", "PlaytestControls",
+	"DailyRewards", "PetFollower", "SubconsciousGate", "BrainTeaserCorner", "NpcKids",
+	"AwakeRemCycle", "PlaytestControls",
 }
 
 for _, name in SERVICES do
-	local service = require(SSS[name])
-	if service.Start then
-		service.Start()
+	local ok, err = pcall(function()
+		local service = require(SSS[name])
+		if service.Start then
+			service.Start()
+		end
+	end)
+	if not ok then
+		warn(name .. " failed to start: " .. tostring(err))
 	end
 end
 
