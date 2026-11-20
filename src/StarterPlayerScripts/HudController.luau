@@ -26,6 +26,11 @@ local function buildTop(root)
 
 	local event = UiKit.Frame(root, { Name = "EventBanner", Size = UDim2.fromOffset(440, 34), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 106), Stroke = C.Cyan, Corner = 12 })
 	ui.Event = event
+
+	local alert = UiKit.Frame(root, { Name = "AlertBanner", Size = UDim2.fromOffset(760, 92), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.3), BackgroundColor3 = Color3.fromRGB(20, 6, 28), BackgroundTransparency = 0.1, Stroke = C.Red, Corner = 18, Visible = false })
+	alert.UIStroke.Thickness = 5
+	ui.Alert = alert
+	ui.AlertText = UiKit.Label(alert, { Size = UDim2.new(1, -24, 1, -12), Position = UDim2.fromOffset(12, 6), Font = Enum.Font.LuckiestGuy, TextStrokeTransparency = 0 })
 	ui.EventText = UiKit.Label(event, { Size = UDim2.new(1, -16, 1, -6), Position = UDim2.fromOffset(8, 3), Text = "NEXT EVENT SOON", TextColor3 = C.Cyan })
 
 	local rot = UiKit.Frame(root, { Name = "RotMeter", Size = UDim2.fromOffset(250, 62), Position = UDim2.fromOffset(12, 60), Stroke = C.Goo, Corner = 12 })
@@ -179,12 +184,28 @@ function HudController.Feed(text: string)
 	feedLines[1].Visible = true
 end
 
+local alertSerial = 0
+function HudController.Alert(text: string, color: Color3)
+	alertSerial += 1
+	local mine = alertSerial
+	ui.AlertText.Text = text
+	ui.AlertText.TextColor3 = color
+	ui.Alert.UIStroke.Color = color
+	ui.Alert.Visible = true
+	task.delay(workspace:GetAttribute("HoldAlert") or 3, function()
+		if mine == alertSerial then
+			ui.Alert.Visible = false
+		end
+	end)
+end
+
 function HudController.Start()
 	local _, root = UiKit.Screen("RottingBrainHud", 1)
 	buildTop(root)
 	buildBottom(root)
 	ClientState.Changed.Event:Connect(render)
 	Remotes.Get("Feed").OnClientEvent:Connect(HudController.Feed)
+	Remotes.Get("Alert").OnClientEvent:Connect(HudController.Alert)
 	HudController.Feed("🧠 Welcome to the ROTTING BRAIN. Buy memes on the Synapse Belt [E]!")
 end
 

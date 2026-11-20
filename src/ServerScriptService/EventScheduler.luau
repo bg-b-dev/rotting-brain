@@ -102,6 +102,7 @@ function EventScheduler.Trigger(name: string)
 	end
 	EventScheduler.Current = { Name = event.Name, Icon = event.Icon, EndsAt = os.clock() + event.Duration }
 	HudNotify.Feed(nil, event.Icon .. " " .. string.upper(event.Name) .. "! " .. event.Text)
+	HudNotify.Alert(nil, event.Icon .. " " .. string.upper(event.Name) .. "! " .. event.Icon, Color3.fromRGB(255, 215, 70))
 	GameSignals.Emit("EventStarted", event.Name)
 	for _, player in DataService.Ready() do
 		HudNotify.PopupOver(player, string.upper(event.Name) .. "!", Color3.fromRGB(255, 215, 70), true)

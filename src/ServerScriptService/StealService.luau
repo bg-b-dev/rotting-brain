@@ -31,8 +31,10 @@ function StealService.TrySteal(player: Player, lobe, idx: number)
 	CarryService.PickUp(player, entry, { Lobe = lobe, OwnerUserId = lobe.Owner and lobe.Owner.UserId })
 	DataService.Bump(player, "Stolen", 1)
 	HudNotify.PopupOver(player, "SNEAKY! +RIZZ", Color3.fromRGB(255, 110, 200), true)
+	HudNotify.Alert(player, "🦹 STOLEN! RUN HOME!", Color3.fromRGB(255, 70, 80))
 	HudNotify.Feed(player, "🦹 You grabbed " .. def.Name .. ". Run home before they slap you!")
 	if lobe.Owner then
+		HudNotify.Alert(lobe.Owner, "🚨 STOLEN! SLAP THEM [F]", Color3.fromRGB(255, 70, 80))
 		HudNotify.Feed(lobe.Owner, "🚨 " .. player.DisplayName .. " is stealing your " .. def.Name .. "! Press [F] to Focus Slap!")
 	end
 end

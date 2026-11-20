@@ -13,6 +13,8 @@ local C = UiKit.Colors
 
 local CatchCardUI = {}
 
+local SOURCE_TITLES = { blend = "🌀 MEME BLENDER CATCH!", bubble = "💭 BUBBLE HATCHED!", steal = "🦹 STOLEN CATCH!" }
+
 local queue = {}
 local showing = false
 
@@ -21,9 +23,9 @@ local function show(root, data)
 	local def = BrainrotCatalog.Get(data.Id)
 	local rarity = RarityConfig.ByName[def.Rarity]
 	local mut = data.Mut and MutationConfig.ByName[data.Mut]
-	local card = UiKit.Frame(root, { Name = "CatchCard", Size = UDim2.fromOffset(420, 330), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 0, 0.45, 0), BackgroundColor3 = Color3.fromRGB(40, 14, 54), BackgroundTransparency = 0.02, Stroke = rarity.Color, Corner = 18 })
+	local card = UiKit.Frame(root, { Name = "CatchCard", Size = UDim2.fromOffset(420, 330), AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -16, 0.5, -10), BackgroundColor3 = Color3.fromRGB(40, 14, 54), BackgroundTransparency = 0.02, Stroke = rarity.Color, Corner = 18 })
 	card.UIStroke.Thickness = 4
-	UiKit.Label(card, { Size = UDim2.new(1, -20, 0, 44), Position = UDim2.fromOffset(10, 8), Text = "NEW BRAINROT!", Font = Enum.Font.LuckiestGuy, TextColor3 = C.Yellow })
+	UiKit.Label(card, { Size = UDim2.new(1, -20, 0, 44), Position = UDim2.fromOffset(10, 8), Text = SOURCE_TITLES[data.Source] or "NEW BRAINROT!", Font = Enum.Font.LuckiestGuy, TextColor3 = C.Yellow })
 	local vp, model = UiKit.Viewport(card, data, { Size = UDim2.fromOffset(170, 150), Position = UDim2.fromOffset(16, 58), BackgroundColor3 = rarity.Color, BackgroundTransparency = 0.75 })
 	Instance.new("UICorner", vp).CornerRadius = UDim.new(0, 12)
 	UiKit.Label(card, { Size = UDim2.fromOffset(210, 52), Position = UDim2.fromOffset(196, 58), Text = def.Name, TextWrapped = true })
@@ -39,7 +41,7 @@ local function show(root, data)
 	local spin = RunService.RenderStepped:Connect(function(dt)
 		model:PivotTo(model:GetPivot() * CFrame.Angles(0, dt * 1.5, 0))
 	end)
-	task.wait(4.5)
+	task.wait(workspace:GetAttribute("HoldCatchCard") or 4.5)
 	spin:Disconnect()
 	TweenService:Create(scale, TweenInfo.new(0.25), { Scale = 0 }):Play()
 	task.wait(0.3)

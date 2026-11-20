@@ -18,6 +18,14 @@ function HudNotify.Popup(player: Player?, text: string, color: Color3, position:
 	end
 end
 
+function HudNotify.Alert(player: Player?, text: string, color: Color3)
+	if player then
+		Remotes.Fire("Alert", player, text, color)
+	else
+		Remotes.FireAll("Alert", text, color)
+	end
+end
+
 function HudNotify.PopupOver(player: Player, text: string, color: Color3, big: boolean?)
 	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 	if root then

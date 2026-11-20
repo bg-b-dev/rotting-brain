@@ -8,7 +8,7 @@ local HudNotify = require(script.Parent.HudNotify)
 
 local Brainpedia = {}
 
-function Brainpedia.Record(player: Player, entry)
+function Brainpedia.Record(player: Player, entry, source: string?)
 	local p = DataService.Get(player)
 	if not p then
 		return
@@ -20,7 +20,7 @@ function Brainpedia.Record(player: Player, entry)
 	if isNew then
 		local found = Economy.FoundCount(p)
 		local def = BrainrotCatalog.Get(entry.Id)
-		Remotes.Fire("CatchCard", player, { Id = entry.Id, Mut = entry.Mut, Lv = entry.Lv or 1, Found = found })
+		Remotes.Fire("CatchCard", player, { Id = entry.Id, Mut = entry.Mut, Lv = entry.Lv or 1, Found = found, Source = source })
 		HudNotify.Feed(player, "📖 NEW BRAINROT! " .. def.Name .. " (" .. found .. "/60)")
 		if found % 10 == 0 then
 			HudNotify.PopupOver(player, "MILESTONE! +10% INCOME", Color3.fromRGB(255, 215, 70), true)

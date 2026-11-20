@@ -57,7 +57,7 @@ function Actions.SetupShowcase(player)
 	local p, rt = service("DataService").Get(player), service("DataService").Rt(player)
 	local LobeService = service("LobeService")
 	local lobe = LobeService.LobeOf(player)
-	p.Washes, p.AuraPoints, p.Cells, p.LobeLevel = 4, 6, 2.43e9, 5
+	p.Washes, p.AuraPoints, p.Cells, p.LobeLevel = 4, 6, 2.43e9, 4
 	p.Upgrades = { Income = 8, Speed = 6, Luck = 7, Defense = 5, Thoughts = 10 }
 	p.Gear = { SlapperSupremo = true, SigmaSneakers = true, NoodleArm = true }
 	for id = 1, 41 do
@@ -66,7 +66,7 @@ function Actions.SetupShowcase(player)
 	LobeService.ClearAll(lobe)
 	p.Podiums = {}
 	lobe.Entries = p.Podiums
-	lobe.Level = 5
+	lobe.Level = 4
 	for _, row in SHOWCASE do
 		LobeService.Place(lobe, { Id = row[1], Mut = row[2], Lv = row[3] })
 	end
@@ -75,8 +75,44 @@ function Actions.SetupShowcase(player)
 	p.Bubbles = { ["1"] = { Kind = "Galaxy", ReadyAt = os.time() + 151 }, ["2"] = { Kind = "Gold", ReadyAt = os.time() + 43 }, ["3"] = { Kind = "Gold", ReadyAt = os.time() }, ["4"] = { Kind = "Basic", ReadyAt = os.time() + 12 } }
 	service("ThoughtBubbleHatch").Refresh(lobe)
 	require(script.Parent.GameSignals).Emit("LobeUpgraded", player, lobe)
-	rt.Rot = 87
+	rt.Rot = 90
 	service("Brainpedia").Record(player, { Id = 42, Lv = 1 })
+end
+
+function Actions.BlendCatch(player, id, mut)
+	local entry = { Id = id, Mut = mut, Lv = 1 }
+	local p = service("DataService").Get(player)
+	p.Pedia[tostring(id)] = nil
+	service("LobeService").Place(service("LobeService").LobeOf(player), entry)
+	require(script.Parent.GameSignals).Emit("Acquired", player, entry, "blend")
+end
+
+function Actions.StealFrom(player, lobeIndex)
+	local LobeService = service("LobeService")
+	local lobe = LobeService.Lobes[lobeIndex]
+	local best, bestIncome = nil, -1
+	for idx, entry in lobe.Entries do
+		local income = require(game:GetService("ReplicatedStorage").BrainrotModelKit).Income(entry)
+		if income > bestIncome then
+			best, bestIncome = idx, income
+		end
+	end
+	player.Character:PivotTo(LobeService.PodiumCFrame(lobe, best) * CFrame.new(0, 4, 4))
+	task.wait(0.2)
+	service("StealService").TrySteal(player, lobe, best)
+	task.wait(0.3)
+	player.Character:PivotTo(lobe.CF * CFrame.new(0, 4, -26) * CFrame.Angles(0, math.pi, 0))
+	lobe.MindBlockUntil = os.clock() + 30
+	lobe.Model.MindBlockField.Transparency = 0.3
+	task.wait(0.2)
+	local root = player.Character.HumanoidRootPart
+	local kid = service("NpcKids").Rigs[lobeIndex]
+	if kid then
+		local at = root.CFrame * CFrame.new(3.5, 0, 2.5)
+		kid:PivotTo(CFrame.lookAt(at.Position, root.Position))
+	end
+	require(script.Parent.HudNotify).Popup(nil, "✋ FOCUS SLAP!", Color3.fromRGB(255, 230, 120), root.Position + Vector3.new(2, 3, 0), true)
+	return root.Position
 end
 
 function Actions.Capture(on)

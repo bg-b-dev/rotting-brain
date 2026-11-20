@@ -3,7 +3,7 @@ local RunService = game:GetService("RunService")
 
 local Remotes = {}
 
-local NAMES = { "Request", "State", "Pedia", "Popup", "Feed", "CatchCard", "OpenUI", "Quiz", "Spin" }
+local NAMES = { "Request", "State", "Pedia", "Popup", "Feed", "CatchCard", "OpenUI", "Quiz", "Spin", "Alert" }
 
 local folder
 if RunService:IsServer() then
