@@ -37,7 +37,7 @@ local function show(root, data)
 	local scale = Instance.new("UIScale")
 	scale.Scale = 0.2
 	scale.Parent = card
-	TweenService:Create(scale, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+	TweenService:Create(scale, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 0.8 }):Play()
 	local spin = RunService.RenderStepped:Connect(function(dt)
 		model:PivotTo(model:GetPivot() * CFrame.Angles(0, dt * 1.5, 0))
 	end)

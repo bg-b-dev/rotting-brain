@@ -25,7 +25,8 @@ function MindBlockService.Activate(player: Player)
 	local duration = MindBlockService.Duration(player)
 	lobe.MindBlockUntil = os.clock() + duration
 	cooldownUntil[player] = os.clock() + duration + COOLDOWN
-	lobe.Model.MindBlockField.Transparency = 0.35
+	lobe.Model.MindBlockField.Material = Enum.Material.Neon
+	lobe.Model.MindBlockField.Transparency = 0.65
 	HudNotify.Popup(nil, "MIND BLOCK! 🛡️", Color3.fromRGB(255, 90, 200), lobe.CF.Position + Vector3.new(0, 18, 0), true)
 	HudNotify.Feed(player, "🛡️ Mind Block up for " .. duration .. "s. Nobody steals from this brain.")
 	DataService.Bump(player, "MindBlocks", 1)
@@ -57,7 +58,8 @@ function MindBlockService.Start()
 			for _, lobe in LobeService.Lobes do
 				local field = lobe.Model.MindBlockField
 				if (lobe.MindBlockUntil or 0) > os.clock() then
-					field.Transparency = 0.25 + 0.15 * math.sin(os.clock() * 4)
+					field.Material = Enum.Material.Neon
+					field.Transparency = 0.68 + 0.08 * math.sin(os.clock() * 4)
 					pushOutIntruders(lobe)
 				elseif field.Transparency < 1 then
 					field.Transparency = 1

@@ -60,7 +60,8 @@ function Actions.SetupShowcase(player)
 	p.Washes, p.AuraPoints, p.Cells, p.LobeLevel = 4, 6, 2.43e9, 4
 	p.Upgrades = { Income = 8, Speed = 6, Luck = 7, Defense = 5, Thoughts = 10 }
 	p.Gear = { SlapperSupremo = true, SigmaSneakers = true, NoodleArm = true }
-	for id = 1, 41 do
+	p.Pedia = {}
+	for id = 1, 40 do
 		p.Pedia[tostring(id)] = { Normal = true, Golden = id % 3 == 0 or nil, Rizzed = id % 5 == 0 or nil }
 	end
 	LobeService.ClearAll(lobe)
@@ -94,7 +95,7 @@ function Actions.StealFrom(player, lobeIndex)
 	for idx, entry in lobe.Entries do
 		local income = require(game:GetService("ReplicatedStorage").BrainrotModelKit).Income(entry)
 		if income > bestIncome then
-			best, bestIncome = idx, income
+			best, bestIncome = tonumber(idx), income
 		end
 	end
 	player.Character:PivotTo(LobeService.PodiumCFrame(lobe, best) * CFrame.new(0, 4, 4))
@@ -103,13 +104,20 @@ function Actions.StealFrom(player, lobeIndex)
 	task.wait(0.3)
 	player.Character:PivotTo(lobe.CF * CFrame.new(0, 4, -26) * CFrame.Angles(0, math.pi, 0))
 	lobe.MindBlockUntil = os.clock() + 30
-	lobe.Model.MindBlockField.Transparency = 0.3
+	lobe.Model.MindBlockField.Material = Enum.Material.Neon
+	lobe.Model.MindBlockField.Transparency = 0.65
 	task.wait(0.2)
 	local root = player.Character.HumanoidRootPart
 	local kid = service("NpcKids").Rigs[lobeIndex]
 	if kid then
-		local at = root.CFrame * CFrame.new(3.5, 0, 2.5)
-		kid:PivotTo(CFrame.lookAt(at.Position, root.Position))
+		local at = root.CFrame * CFrame.new(3.5, 0.6, 2.5)
+		local kidPos = kid:GetPivot().Position
+		local move = CFrame.lookAt(at.Position, root.Position) * kid:GetPivot():Inverse()
+		for _, m in kid.Parent:GetChildren() do
+			if m:IsA("Model") and (m:GetPivot().Position - kidPos).Magnitude < 6 then
+				m:PivotTo(move * m:GetPivot())
+			end
+		end
 	end
 	require(script.Parent.HudNotify).Popup(nil, "✋ FOCUS SLAP!", Color3.fromRGB(255, 230, 120), root.Position + Vector3.new(2, 3, 0), true)
 	return root.Position

@@ -27,7 +27,7 @@ local function buildTop(root)
 	local event = UiKit.Frame(root, { Name = "EventBanner", Size = UDim2.fromOffset(440, 34), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 106), Stroke = C.Cyan, Corner = 12 })
 	ui.Event = event
 
-	local alert = UiKit.Frame(root, { Name = "AlertBanner", Size = UDim2.fromOffset(760, 92), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.3), BackgroundColor3 = Color3.fromRGB(20, 6, 28), BackgroundTransparency = 0.1, Stroke = C.Red, Corner = 18, Visible = false })
+	local alert = UiKit.Frame(root, { Name = "AlertBanner", Size = UDim2.fromOffset(760, 92), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.45), BackgroundColor3 = Color3.fromRGB(20, 6, 28), BackgroundTransparency = 0.1, Stroke = C.Red, Corner = 18, Visible = false })
 	alert.UIStroke.Thickness = 5
 	ui.Alert = alert
 	ui.AlertText = UiKit.Label(alert, { Size = UDim2.new(1, -24, 1, -12), Position = UDim2.fromOffset(12, 6), Font = Enum.Font.LuckiestGuy, TextStrokeTransparency = 0 })

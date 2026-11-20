@@ -1,4 +1,3 @@
-local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local Remotes = require(game:GetService("ReplicatedStorage").Remotes)
 
@@ -14,7 +13,7 @@ function MemePopups.Show(text: string, color: Color3, position: Vector3, big: bo
 	att.Parent = workspace.Terrain
 	local bb = Instance.new("BillboardGui")
 	bb.Adornee = att
-	bb.AlwaysOnTop = true
+	bb.AlwaysOnTop = false
 	bb.LightInfluence = 0
 	bb.Size = big and UDim2.fromScale(20, 4.6) or UDim2.fromScale(11, 2.6)
 	local t = Instance.new("TextLabel")
@@ -27,7 +26,7 @@ function MemePopups.Show(text: string, color: Color3, position: Vector3, big: bo
 	t.TextStrokeTransparency = 0
 	t.Rotation = math.random(-8, 8)
 	t.Parent = bb
-	bb.Parent = Players.LocalPlayer.PlayerGui
+	bb.Parent = att
 	local info = TweenInfo.new(big and 1.8 or 1.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 	TweenService:Create(bb, info, { StudsOffsetWorldSpace = Vector3.new(0, big and 6 or 4, 0) }):Play()
 	TweenService:Create(t, info, { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()

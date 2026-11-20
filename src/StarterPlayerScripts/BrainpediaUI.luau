@@ -14,16 +14,17 @@ local BrainpediaUI = {}
 local tiles = {}
 
 function BrainpediaUI.Start()
-	local win, content = UiKit.Window("Brainpedia", "📖 BRAINPEDIA", Vector2.new(940, 560), C.Pink)
-	local header = UiKit.Label(content, { Size = UDim2.new(1, 0, 0, 26), Text = "", TextColor3 = C.Yellow, TextXAlignment = Enum.TextXAlignment.Left })
+	local win, content = UiKit.Window("Brainpedia", "📖 BRAINPEDIA", Vector2.new(1240, 680), C.Pink)
+	local header = UiKit.Label(content, { Size = UDim2.fromOffset(330, 44), Text = "", TextColor3 = C.Yellow, Font = Enum.Font.LuckiestGuy, TextXAlignment = Enum.TextXAlignment.Left })
+	local subHeader = UiKit.Label(content, { Size = UDim2.new(1, -350, 0, 26), Position = UDim2.fromOffset(350, 10), Text = "", TextColor3 = C.Pink, TextXAlignment = Enum.TextXAlignment.Right })
 	local gridHolder = Instance.new("Frame")
 	gridHolder.BackgroundTransparency = 1
-	gridHolder.Position = UDim2.fromOffset(0, 32)
-	gridHolder.Size = UDim2.new(1, 0, 1, -100)
+	gridHolder.Position = UDim2.fromOffset(0, 52)
+	gridHolder.Size = UDim2.new(1, 0, 1, -94)
 	gridHolder.Parent = content
-	local grid = UiKit.Grid(gridHolder, Vector2.new(82, 124), 8)
-	local info = UiKit.Frame(content, { Size = UDim2.new(1, 0, 0, 60), Position = UDim2.new(0, 0, 1, -60), BackgroundColor3 = C.PanelLight, Stroke = C.Pink })
-	local infoText = UiKit.Label(info, { Size = UDim2.new(1, -20, 1, -10), Position = UDim2.fromOffset(10, 5), Text = "Hover a tile. Every 10 found = +10% income. 60 found = income x2.", TextWrapped = true })
+	local grid = UiKit.Grid(gridHolder, Vector2.new(94, 98), 6)
+	local info = UiKit.Frame(content, { Size = UDim2.new(1, 0, 0, 36), Position = UDim2.new(0, 0, 1, -36), BackgroundColor3 = C.PanelLight, Stroke = C.Pink })
+	local infoText = UiKit.Label(info, { Size = UDim2.new(1, -20, 1, -8), Position = UDim2.fromOffset(10, 4), Text = "Hover a tile. Every 10 found = +10% income. 60 found = income x2.", TextWrapped = true })
 	local built = false
 
 	local function buildTiles()
@@ -31,13 +32,13 @@ function BrainpediaUI.Start()
 		for _, def in BrainrotCatalog.List do
 			local rarity = RarityConfig.ByName[def.Rarity]
 			local tile = UiKit.Frame(grid, { LayoutOrder = def.Id, BackgroundColor3 = C.Panel, Stroke = rarity.Color, Corner = 8 })
-			local vp = UiKit.Viewport(tile, { Id = def.Id, Lv = 1 }, { Size = UDim2.new(1, 0, 0, 64) })
-			local name = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 18), Position = UDim2.fromOffset(3, 64), Text = def.Name, TextColor3 = rarity.Color })
-			local status = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 16), Position = UDim2.fromOffset(3, 84), Text = "", TextColor3 = C.Goo })
-			local badge = UiKit.Label(tile, { Size = UDim2.fromOffset(22, 22), Position = UDim2.new(1, -24, 0, 2), Text = "🔒" })
+			local vp = UiKit.Viewport(tile, { Id = def.Id, Lv = 1 }, { Size = UDim2.new(1, 0, 0, 56) })
+			local name = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 16), Position = UDim2.fromOffset(3, 56), Text = def.Name, TextColor3 = rarity.Color })
+			local status = UiKit.Label(tile, { Size = UDim2.new(1, -6, 0, 14), Position = UDim2.fromOffset(3, 73), Text = "", TextColor3 = C.Goo })
+			local badge = UiKit.Label(tile, { Size = UDim2.fromOffset(20, 20), Position = UDim2.new(1, -22, 0, 2), Text = "🔒" })
 			local dots = {}
 			for i, mut in MutationConfig.List do
-				dots[mut.Name] = UiKit.Frame(tile, { Size = UDim2.fromOffset(7, 7), Position = UDim2.fromOffset(5 + (i - 1) * 9, 106), BackgroundColor3 = mut.Color, BackgroundTransparency = 0.85, Corner = 4 })
+				dots[mut.Name] = UiKit.Frame(tile, { Size = UDim2.fromOffset(7, 7), Position = UDim2.fromOffset(11 + (i - 1) * 9, 89), BackgroundColor3 = mut.Color, BackgroundTransparency = 0.85, Corner = 4 })
 			end
 			local hover = Instance.new("TextButton")
 			hover.BackgroundTransparency = 1
@@ -80,7 +81,8 @@ function BrainpediaUI.Start()
 			end
 		end
 		local bonus = 10 * (found // 10)
-		header.Text = "FOUND " .. found .. "/60 · 8 RARITIES · 8 MUTATIONS · MILESTONE BONUS +" .. bonus .. "% INCOME" .. (found >= 60 and " · x2 COMPLETE!" or "")
+		header.Text = "FOUND " .. found .. "/60"
+		subHeader.Text = "8 RARITIES · 8 MUTATIONS · MILESTONE BONUS +" .. bonus .. "% INCOME" .. (found >= 60 and " · x2 COMPLETE!" or "")
 	end
 	ClientState.PediaChanged.Event:Connect(render)
 	UiKit.OnOpen(win, render)
