@@ -17,8 +17,8 @@ local ui = {}
 local feedLines = {}
 
 local function buildTop(root)
-	local banner = UiKit.Frame(root, { Name = "FeatureBanner", Size = UDim2.fromOffset(820, 24), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 6), BackgroundColor3 = Color3.fromRGB(20, 6, 28), Stroke = C.Pink, Corner = 12 })
-	UiKit.Label(banner, { Size = UDim2.new(1, -16, 1, -4), Position = UDim2.fromOffset(8, 2), TextColor3 = C.Yellow, Text = "60 BRAINROTS · 8 RARITIES · 8 MUTATIONS · MEME BLENDER · THOUGHT BUBBLES · STEAL · DEFENSE · REBIRTH" })
+	local banner = UiKit.Frame(root, { Name = "FeatureBanner", Size = UDim2.fromOffset(820, 28), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 4), BackgroundColor3 = Color3.fromRGB(20, 6, 28), Stroke = C.Pink, Corner = 12 })
+	UiKit.Label(banner, { Size = UDim2.new(1, -16, 1, -4), Position = UDim2.fromOffset(8, 2), TextColor3 = C.Yellow, RichText = true, Text = "<font color=\"#82FF50\">🧠 ROTTING BRAIN 🧠</font>  ·  60 BRAINROTS · 8 MUTATIONS · STEAL · DEFENSE · REBIRTH" })
 
 	local cells = UiKit.Frame(root, { Name = "Cells", Size = UDim2.fromOffset(380, 64), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 36), Stroke = C.Goo, Corner = 14 })
 	ui.Cells = UiKit.Label(cells, { Size = UDim2.new(1, -16, 0, 38), Position = UDim2.fromOffset(8, 2), Text = "🧠 0", TextColor3 = C.White })
